@@ -7,7 +7,7 @@ public record CreateEmployeeCommand : IRequest<int>
     public string Name { get; init; }
     public string Email { get; init; }
     public string Tel { get; init; }
-    public DateTime Joined { get; init; }
+    public string Joined { get; init; }
 }
 
 public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, int>
