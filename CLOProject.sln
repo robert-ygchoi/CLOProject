@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Host", "Host\Host.csproj", "{5FD07A00-BAB4-48CD-A8F1-6BE81F77601B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Host", "src\Host\Host.csproj", "{5FD07A00-BAB4-48CD-A8F1-6BE81F77601B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루션 항목", "{D52FA127-570B-4365-8D9E-35A94FD9FE1E}"
 	ProjectSection(SolutionItems) = preProject
@@ -12,11 +12,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루�
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{CD545207-7F56-4CBB-8418-AAAE33EB8164}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Application\Application.csproj", "{CD545207-7F56-4CBB-8418-AAAE33EB8164}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{DFCD45D0-5C4A-46CC-A50C-EB444D6E18AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domain\Domain.csproj", "{DFCD45D0-5C4A-46CC-A50C-EB444D6E18AD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{FD92A479-EFA7-4427-95E8-0EB3716BDB9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{FD92A479-EFA7-4427-95E8-0EB3716BDB9E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F1D4D1EF-96CC-49C7-BBD2-B831DF760B0A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6885C2A0-5103-4F1B-AAE3-48D336472392}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UnitTests", "tests\Application.UnitTests\Application.UnitTests.csproj", "{CFD5F11D-434B-4E5F-82EF-B037DFEB0355}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,9 +46,20 @@ Global
 		{FD92A479-EFA7-4427-95E8-0EB3716BDB9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD92A479-EFA7-4427-95E8-0EB3716BDB9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD92A479-EFA7-4427-95E8-0EB3716BDB9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFD5F11D-434B-4E5F-82EF-B037DFEB0355}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFD5F11D-434B-4E5F-82EF-B037DFEB0355}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFD5F11D-434B-4E5F-82EF-B037DFEB0355}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFD5F11D-434B-4E5F-82EF-B037DFEB0355}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5FD07A00-BAB4-48CD-A8F1-6BE81F77601B} = {F1D4D1EF-96CC-49C7-BBD2-B831DF760B0A}
+		{CD545207-7F56-4CBB-8418-AAAE33EB8164} = {F1D4D1EF-96CC-49C7-BBD2-B831DF760B0A}
+		{DFCD45D0-5C4A-46CC-A50C-EB444D6E18AD} = {F1D4D1EF-96CC-49C7-BBD2-B831DF760B0A}
+		{FD92A479-EFA7-4427-95E8-0EB3716BDB9E} = {F1D4D1EF-96CC-49C7-BBD2-B831DF760B0A}
+		{CFD5F11D-434B-4E5F-82EF-B037DFEB0355} = {6885C2A0-5103-4F1B-AAE3-48D336472392}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {91B82454-D604-4DC5-8629-6B5B750F0C54}
