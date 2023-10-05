@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace Application.Employees.Commands.CreateEmployee;
 

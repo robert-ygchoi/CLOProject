@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace Application.Employees.Commands.CreateEmployee;
+﻿namespace Application.Employees.Commands.CreateEmployee;
 
 public record CreateEmployeeCommand : IRequest<int>
 {
