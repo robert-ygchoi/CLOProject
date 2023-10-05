@@ -12,7 +12,8 @@ public class CreateEmployeeCommandValidator : AbstractValidator<CreateEmployeeCo
         // NOTE - Check for email
         RuleFor(e => e.Email)
             .NotEmpty()
-            .Matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+            .Matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+            .WithMessage("{ProperyName} 형식이 올바르지 않습니다.");
 
         // NOTE - Check for tel number
         RuleFor(e => e.Tel)
