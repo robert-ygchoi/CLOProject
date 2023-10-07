@@ -10,6 +10,7 @@ public static class ConfigureServices
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         });
 
