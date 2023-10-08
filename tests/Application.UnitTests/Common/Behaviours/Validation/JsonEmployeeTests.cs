@@ -1,27 +1,22 @@
-﻿using Application.Employees.Commands.CreateEmployee;
+﻿using Application.Employees.Commands.CreateCsvEmployee;
+using Application.Employees.Commands.CreateJsonEmployee;
 using FluentValidation.TestHelper;
 
 namespace Application.UnitTests.Common.Behaviours.Validation;
 
-public class EmployeeTests
+public class JsonEmployeeTests
 {
-    private CreateEmployeeCommandValidator _validator;
+    private CreateJsonEmployeeCommandValidator _validator;
     [SetUp]
     public void Setup()
     {
-        _validator = new CreateEmployeeCommandValidator();
+        _validator = new CreateJsonEmployeeCommandValidator();
     }
 
     [Test]
     public void Should_have_success()
     {
-        var command = new CreateEmployeeCommand()
-        {
-            Name = "최용국",
-            Email = "opzerg9378@gmail.com",
-            Tel = "010-9890-1955",
-            Joined = "2023-10-05",
-        };
+        var command = new CreateJsonEmployeeCommand("최용국", "opzerg9378@gmail.com", "010-9890-1955", "2023-10-05");
 
         var result = _validator.TestValidate(command);
         result.ShouldNotHaveAnyValidationErrors();
@@ -30,13 +25,7 @@ public class EmployeeTests
     [Test]
     public void Should_have_error_when_Name_is_empty()
     {
-        var command = new CreateEmployeeCommand()
-        {
-            Name = "",
-            Email = "opzerg9378@gmail.com",
-            Tel = "010-9890-1955",
-            Joined = "2023-10-05",
-        };
+        var command = new CreateJsonEmployeeCommand("", "opzerg9378@gmail.com", "010-9890-1955", "2023-10-05");
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(e => e.Name);
@@ -45,13 +34,7 @@ public class EmployeeTests
     [Test]
     public void Should_have_error_when_Email_is_empty()
     {
-        var command = new CreateEmployeeCommand()
-        {
-            Name = "최용국",
-            Email = "",
-            Tel = "010-9890-1955",
-            Joined = "2023-10-05",
-        };
+        var command = new CreateJsonEmployeeCommand("최용국", "", "010-9890-1955", "2023-10-05");
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(e => e.Email);
@@ -62,13 +45,7 @@ public class EmployeeTests
     [TestCase("opzerg@gmail")]
     public void Should_have_error_when_Email_is_invalid(string email)
     {
-        var command = new CreateEmployeeCommand()
-        {
-            Name = "최용국",
-            Email = email,
-            Tel = "010-9890-1955",
-            Joined = "2023-10-05",
-        };
+        var command = new CreateJsonEmployeeCommand("최용국", email, "010-9890-1955", "2023-10-05");
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(e => e.Email);
@@ -77,13 +54,7 @@ public class EmployeeTests
     [Test]
     public void Should_have_error_when_Tel_is_empty()
     {
-        var command = new CreateEmployeeCommand()
-        {
-            Name = "최용국",
-            Email = "opzerg9378@gmail.com",
-            Tel = "",
-            Joined = "2023-10-05",
-        };
+        var command = new CreateJsonEmployeeCommand("최용국", "opzerg9378@gmail.com", "", "2023-10-05");
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(e => e.Tel);
@@ -94,13 +65,7 @@ public class EmployeeTests
     [TestCase("010-000-0000", Description = "중간 번호는 4자리여야만 함")]
     public void Should_have_error_when_Tel_is_invalid(string tel)
     {
-        var command = new CreateEmployeeCommand()
-        {
-            Name = "최용국",
-            Email = "opzerg9378@gmail.com",
-            Tel = tel,
-            Joined = "2023-10-05",
-        };
+        var command = new CreateJsonEmployeeCommand("최용국", "opzerg9378@gmail.com", tel, "2023-10-05");
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(e => e.Tel);
@@ -109,13 +74,7 @@ public class EmployeeTests
     [Test]
     public void Should_have_error_when_Joined_is_empty()
     {
-        var command = new CreateEmployeeCommand()
-        {
-            Name = "최용국",
-            Email = "opzerg9378@gmail.com",
-            Tel = "010-9890-1955",
-            Joined = "",
-        };
+        var command = new CreateJsonEmployeeCommand("최용국", "opzerg9378@gmail.com", "010-9890-1955", "");
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(e => e.Joined);
@@ -127,13 +86,7 @@ public class EmployeeTests
     [TestCase("2023-01-33", Description = "초과되는 날인 경우")]
     public void Should_have_error_when_Joined_is_invalid(string joined)
     {
-        var command = new CreateEmployeeCommand()
-        {
-            Name = "최용국",
-            Email = "opzerg9378@gmail.com",
-            Tel = "010-9890-1955",
-            Joined = joined,
-        };
+        var command = new CreateJsonEmployeeCommand("최용국", "opzerg9378@gmail.com", "010-9890-1955", joined);
 
         var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(e => e.Joined);
