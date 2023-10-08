@@ -1,4 +1,7 @@
-﻿using CsvHelper.Configuration;
+﻿using Application.Interfaces;
+using AutoMapper;
+using CsvHelper.Configuration;
+using Domain.Entities;
 
 namespace Application.Employees.Commands.CreateCsvEmployee;
 
@@ -22,10 +25,19 @@ public class CreateCsvEmployeeCommandMap : ClassMap<CreateCsvEmployeeCommand>
 
 public class CreateCsvEmployeeCommandHandler : IRequestHandler<CreateCsvEmployeeCommand, int>
 {
-    public Task<int> Handle(CreateCsvEmployeeCommand request, CancellationToken cancellationToken)
+    private IApplicationDbContext _applicationDbContext;
+    private IMapper _mapper;
+
+    public CreateCsvEmployeeCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
     {
-        // TODO - entity mapping
-        // TODO - create item
-        return Task.FromResult(0);
+        this._applicationDbContext = applicationDbContext;
+        this._mapper = mapper;
+    }
+    public async Task<int> Handle(CreateCsvEmployeeCommand request, CancellationToken cancellationToken)
+    {
+        Employee entity = _mapper.Map<Employee>(request);
+        _applicationDbContext.Employees.Add(entity);
+
+        return await _applicationDbContext.SaveChangesAsync(cancellationToken);
     }
 }

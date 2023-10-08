@@ -20,7 +20,7 @@ public class ConvertFileEmployeeCommandHandler : IRequestHandler<ConvertFileEmpl
             return;
 
         using StreamReader reader = new(request.JsonOrCsvFileContent.OpenReadStream());
-        // .NET 7 이상부터 cancellationToken 전파 가능
+        // NOTE: .NET 7 이상부터 cancellationToken 전파 가능
         string jsonOrCsvContent = await reader.ReadToEndAsync();
 
         if (request.JsonOrCsvFileContent.FileName.EndsWith(".csv"))

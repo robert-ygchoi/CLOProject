@@ -26,8 +26,14 @@ public class EmployeesController : ControllerBase
         if (csvOrJsonFileContent is null && string.IsNullOrEmpty(csvOrJsonStringContent))
             return BadRequest();
 
+        // NOTE: transaction 고민이 필요.
         await this._mediator.Send(
             new ConvertFileEmployeeCommand(csvOrJsonFileContent), 
+            cancellationToken
+        );
+
+        await this._mediator.Send(
+            new ConvertStringEmployeeCommand(csvOrJsonStringContent),
             cancellationToken
         );
 
