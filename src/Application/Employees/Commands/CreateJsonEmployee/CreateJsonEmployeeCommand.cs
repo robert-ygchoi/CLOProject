@@ -1,4 +1,7 @@
-﻿using System.Text.Json.Serialization;
+﻿using Application.Interfaces;
+using AutoMapper;
+using Domain.Entities;
+using System.Text.Json.Serialization;
 
 namespace Application.Employees.Commands.CreateJsonEmployee;
 
@@ -10,10 +13,20 @@ public record CreateJsonEmployeeCommand(
 
 public class CreateJsonEmployeeCommandHandler : IRequestHandler<CreateJsonEmployeeCommand, int>
 {
-    public Task<int> Handle(CreateJsonEmployeeCommand request, CancellationToken cancellationToken)
+    private readonly IApplicationDbContext _applicationDbContext;
+    private readonly IMapper _mapper;
+
+    public CreateJsonEmployeeCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
     {
-        // TODO - entity mapping
-        // TODO - create item
-        return Task.FromResult(0);
+        this._applicationDbContext = applicationDbContext;
+        this._mapper = mapper;
+    }
+    public async Task<int> Handle(CreateJsonEmployeeCommand request, CancellationToken cancellationToken)
+    {
+        Employee entity = _mapper.Map<Employee>(request);
+
+        _applicationDbContext.Employees.Add(entity);
+
+        return await _applicationDbContext.SaveChangesAsync(cancellationToken);
     }
 }
