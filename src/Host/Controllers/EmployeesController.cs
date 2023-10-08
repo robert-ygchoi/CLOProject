@@ -6,7 +6,7 @@ namespace Host.Controllers;
 
 [ApiController]
 [Route("api/employee")]
-public class EmployeesController
+public class EmployeesController : ControllerBase
 {
     private readonly IMediator _mediator;
 
@@ -19,9 +19,24 @@ public class EmployeesController
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesDefaultResponseType]
-    public async Task<IActionResult> Create([FromBody] CreateEmployeeCommand command)
+    public async Task<IActionResult> Create(IFormFile? csvOrJsonFileContent, 
+        [FromForm] string? csvOrJsonStringContent, 
+        CancellationToken cancellationToken)
     {
-        await this._mediator.Send(command);
-        return new CreatedResult(new Uri("/api/employee", UriKind.Relative), new { name = command.Name });
+        if (csvOrJsonFileContent is null || string.IsNullOrEmpty(csvOrJsonStringContent))
+            return BadRequest();
+
+        // TODO: csvOrJsonStringContent 처리
+        var employees = await this._mediator.Send(
+            new CreateEmployeeFileCommand() { JsonOrCsvFileContent = csvOrJsonFileContent }, 
+            cancellationToken
+        );
+
+        foreach (var employee in employees)
+        {
+            await this._mediator.Send(employee, cancellationToken);
+        }
+
+        return Created(new Uri("/api/employee", UriKind.Relative), new { employees.Count });
     }
 }
