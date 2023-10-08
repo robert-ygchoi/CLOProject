@@ -1,4 +1,4 @@
-﻿using Application.Employees.Commands.CreateEmployee;
+﻿using Application.Employees.Commands.ConvertEmployee;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,20 +23,15 @@ public class EmployeesController : ControllerBase
         [FromForm] string? csvOrJsonStringContent, 
         CancellationToken cancellationToken)
     {
-        if (csvOrJsonFileContent is null || string.IsNullOrEmpty(csvOrJsonStringContent))
+        if (csvOrJsonFileContent is null && string.IsNullOrEmpty(csvOrJsonStringContent))
             return BadRequest();
 
-        // TODO: csvOrJsonStringContent 처리
-        var employees = await this._mediator.Send(
-            new CreateEmployeeFileCommand() { JsonOrCsvFileContent = csvOrJsonFileContent }, 
+        await this._mediator.Send(
+            new ConvertFileEmployeeCommand(csvOrJsonFileContent), 
             cancellationToken
         );
 
-        foreach (var employee in employees)
-        {
-            await this._mediator.Send(employee, cancellationToken);
-        }
-
-        return Created(new Uri("/api/employee", UriKind.Relative), new { employees.Count });
+        // TODO: value managed
+        return Created(new Uri("/api/employee", UriKind.Relative), null);
     }
 }

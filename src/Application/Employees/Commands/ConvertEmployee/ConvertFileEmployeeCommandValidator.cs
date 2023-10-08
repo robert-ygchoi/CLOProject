@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Application.Employees.Commands.CreateEmployee;
+namespace Application.Employees.Commands.ConvertEmployee;
 
-public class CreateEmployeeFileCommandValidator : AbstractValidator<CreateEmployeeFileCommand>
+public class ConvertFileEmployeeCommandValidator : AbstractValidator<ConvertFileEmployeeCommand>
 {
-    public CreateEmployeeFileCommandValidator() 
+    public ConvertFileEmployeeCommandValidator()
     {
         RuleFor(e => e.JsonOrCsvFileContent)
 #pragma warning disable CS8622 // When 절 때문에 Null이 발생하지 않음.
@@ -14,7 +14,7 @@ public class CreateEmployeeFileCommandValidator : AbstractValidator<CreateEmploy
     }
 
     // 확장자가 길어질 경우 refactoring 필요
-    private static bool BeValidExtension(IFormFile jsonOrCsvFileContent) => 
-        jsonOrCsvFileContent.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase) || 
+    private static bool BeValidExtension(IFormFile jsonOrCsvFileContent) =>
+        jsonOrCsvFileContent.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase) ||
         jsonOrCsvFileContent.FileName.EndsWith(".json", StringComparison.OrdinalIgnoreCase);
 }

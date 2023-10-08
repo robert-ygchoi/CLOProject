@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 
-namespace Application.Employees.Commands.CreateEmployee;
+namespace Application.Employees.Commands.CreateCsvEmployee;
 
-public class CreateEmployeeCommandValidator : AbstractValidator<CreateEmployeeCommand>
+public class CreateCsvEmployeeCommandValidator : AbstractValidator<CreateCsvEmployeeCommand>
 {
-    public CreateEmployeeCommandValidator()
+    public CreateCsvEmployeeCommandValidator()
     {
         RuleFor(e => e.Name).NotEmpty();
 
@@ -18,15 +18,15 @@ public class CreateEmployeeCommandValidator : AbstractValidator<CreateEmployeeCo
         RuleFor(e => e.Tel)
             .NotEmpty()
             // NOTE - 대한민국 핸드폰 번호 010, 011, 017만 포함하여 정규식을 생성
-            .Matches(@"^(010|011|017)-\d{4}-\d{4}$")
+            .Matches(@"^(010|011|017)\d{4}\d{4}$")
             .WithMessage("{ProperyName}은 010-0000-0000 또는 011-0000-0000 또는 017-0000-0000 이여야 합니다.");
 
         // NOTE - Check for datetime
         RuleFor(e => e.Joined)
             .NotEmpty()
             .Must(BeValidJoined)
-            .WithMessage("{ProperyName}은 yyyy-MM-dd 여야 합니다.");
+            .WithMessage("{ProperyName}은 yyyy.MM.dd 여야 합니다.");
     }
 
-    private static bool BeValidJoined(string joined) => DateTime.TryParseExact(joined, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
+    private static bool BeValidJoined(string joined) => DateTime.TryParseExact(joined, "yyyy.MM.dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
 }
