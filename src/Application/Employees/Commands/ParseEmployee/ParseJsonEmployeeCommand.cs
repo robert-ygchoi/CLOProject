@@ -1,4 +1,5 @@
-﻿using Application.Employees.Commands.CreateJsonEmployee;
+﻿using Application.Common.Exceptions;
+using Application.Employees.Commands.CreateJsonEmployee;
 using System.Text.Json;
 
 namespace Application.Employees.Commands.ParseEmployee;
@@ -25,9 +26,8 @@ public class ParseJsonEmployeeCommandHandler : IRequestHandler<ParseJsonEmployee
     public static IEnumerable<CreateJsonEmployeeCommand> Parse(ParseJsonEmployeeCommand request)
     {
         List<CreateJsonEmployeeCommand>? commands = JsonSerializer.Deserialize<List<CreateJsonEmployeeCommand>>(request.Content);
-        // TODO: exception managed
         if (commands is null)
-            throw new Exception("");
+            throw new EmployeeParseFromJsonException(request.Content);
 
         return commands;
     }

@@ -3,7 +3,15 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Employees.Commands.ConvertEmployee;
 
-public record ConvertFileEmployeeCommand(IFormFile? JsonOrCsvFileContent) : IRequest;
+public record ConvertFileEmployeeCommand : IRequest
+{
+    public ConvertFileEmployeeCommand(IFormFile? jsonOrCsvFileContent)
+    {
+        JsonOrCsvFileContent = jsonOrCsvFileContent;
+    }
+
+    public IFormFile? JsonOrCsvFileContent { get; init; }
+}
 
 public class ConvertFileEmployeeCommandHandler : IRequestHandler<ConvertFileEmployeeCommand>
 {

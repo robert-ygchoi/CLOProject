@@ -5,11 +5,26 @@ using Domain.Entities;
 
 namespace Application.Employees.Commands.CreateCsvEmployee;
 
-public record CreateCsvEmployeeCommand(string Name, string Email, string Tel, string Joined) : IRequest<int>
+public record CreateCsvEmployeeCommand : IRequest<int>
 {
-    public CreateCsvEmployeeCommand() : this("", "", "", "")
+#pragma warning disable CS8618 // CsvHelper ctor
+    private CreateCsvEmployeeCommand()
+#pragma warning restore CS8618 // CsvHelper ctor
     {
     }
+
+    public CreateCsvEmployeeCommand(string name, string email, string tel, string joined)
+    {
+        Name = name;
+        Email = email;
+        Tel = tel;
+        Joined = joined;
+    }
+
+    public string Name { get; init; }
+    public string Email { get; init; }
+    public string Tel { get; init; }
+    public string Joined { get; init; }
 }
 
 public class CreateCsvEmployeeCommandMap : ClassMap<CreateCsvEmployeeCommand>
@@ -25,19 +40,19 @@ public class CreateCsvEmployeeCommandMap : ClassMap<CreateCsvEmployeeCommand>
 
 public class CreateCsvEmployeeCommandHandler : IRequestHandler<CreateCsvEmployeeCommand, int>
 {
-    private IApplicationDbContext _applicationDbContext;
+    private IApplicationDbContext _context;
     private IMapper _mapper;
 
-    public CreateCsvEmployeeCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public CreateCsvEmployeeCommandHandler(IApplicationDbContext context, IMapper mapper)
     {
-        this._applicationDbContext = applicationDbContext;
+        this._context = context;
         this._mapper = mapper;
     }
     public async Task<int> Handle(CreateCsvEmployeeCommand request, CancellationToken cancellationToken)
     {
         Employee entity = _mapper.Map<Employee>(request);
-        _applicationDbContext.Employees.Add(entity);
+        _context.Employees.Add(entity);
 
-        return await _applicationDbContext.SaveChangesAsync(cancellationToken);
+        return await _context.SaveChangesAsync(cancellationToken);
     }
 }
