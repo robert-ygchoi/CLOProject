@@ -4,7 +4,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Employees.Queries;
 
-public record GetEmployeeContactQuery(string Name) : IRequest<EmployeeContactDto?>;
+public record GetEmployeeContactQuery:  IRequest<EmployeeContactDto?>
+{
+    public GetEmployeeContactQuery(string name)
+    {
+        Name = name;
+    }
+
+    public string Name { get; init; }
+}
 
 public class GetEmployeeContactQueryHandler : IRequestHandler<GetEmployeeContactQuery, EmployeeContactDto?>
 {

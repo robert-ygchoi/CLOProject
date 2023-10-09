@@ -1,11 +1,28 @@
-﻿namespace Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Entities;
 
 public class Employee
 {
-    public int Id { get; set; }
-    public string Name {  get; set; }
-    public string Email { get; set; }
-    public string PhoneNumber { get; set; }
-    public string CreatedAt { get; set; }
+    private Employee()
+    {
+
+    }
+
+    public Employee(int id, string name, string email, string phoneNumber, string createdAt)
+    {
+        Id = id;
+        Name = name;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        CreatedAt = createdAt;
+    }
+
+    [Key]
+    public int Id { get; init; }
+    public string Name {  get; init; }
+    public string Email { get; init; }
+    public string PhoneNumber { get; init; }
+    public string CreatedAt { get; init; }
 }
 

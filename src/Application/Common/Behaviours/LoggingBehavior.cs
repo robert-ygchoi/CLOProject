@@ -28,7 +28,7 @@ public class ResponseLoggingBehavior<TRequest, TResponse> : IRequestPostProcesso
     public ResponseLoggingBehavior(ILogger<TRequest> logger)
     {
         _logger = logger;
-
+        
     }
 
     public Task Process(TRequest request, TResponse response, CancellationToken cancellationToken)

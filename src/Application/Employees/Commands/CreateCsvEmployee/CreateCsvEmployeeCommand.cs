@@ -5,11 +5,26 @@ using Domain.Entities;
 
 namespace Application.Employees.Commands.CreateCsvEmployee;
 
-public record CreateCsvEmployeeCommand(string Name, string Email, string Tel, string Joined) : IRequest<int>
+public record CreateCsvEmployeeCommand : IRequest<int>
 {
-    public CreateCsvEmployeeCommand() : this("", "", "", "")
+#pragma warning disable CS8618 // CsvHelper ctor
+    private CreateCsvEmployeeCommand()
+#pragma warning restore CS8618 // CsvHelper ctor
     {
     }
+
+    public CreateCsvEmployeeCommand(string name, string email, string tel, string joined)
+    {
+        Name = name;
+        Email = email;
+        Tel = tel;
+        Joined = joined;
+    }
+
+    public string Name { get; init; }
+    public string Email { get; init; }
+    public string Tel { get; init; }
+    public string Joined { get; init; }
 }
 
 public class CreateCsvEmployeeCommandMap : ClassMap<CreateCsvEmployeeCommand>

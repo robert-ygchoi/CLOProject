@@ -2,7 +2,15 @@
 
 namespace Application.Employees.Commands.ConvertEmployee;
 
-public record ConvertStringEmployeeCommand(string? Content) : IRequest;
+public record ConvertStringEmployeeCommand : IRequest
+{
+    public ConvertStringEmployeeCommand(string? content)
+    {
+        Content = content;
+    }
+
+    public string? Content { get; init; }
+}
 
 public class ConvertStringEmployeeCommandHandler : IRequestHandler<ConvertStringEmployeeCommand>
 {

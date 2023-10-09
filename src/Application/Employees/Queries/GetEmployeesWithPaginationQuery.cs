@@ -2,14 +2,23 @@
 using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Employees.Queries;
 
 public record GetEmployeesWithPaginationQuery : IRequest<PaginatedList<EmployeeDto>>
 {
-    public int PageNumber { get; init; } = 1;
-    public int PageSize { get; init; } = 10;
+    public GetEmployeesWithPaginationQuery() : this(1, 10)
+    {
+    }
+
+    public GetEmployeesWithPaginationQuery(int pageNumber, int pageSize)
+    {
+        PageNumber = pageNumber;
+        PageSize = pageSize;
+    }
+
+    public int PageNumber { get; init; }
+    public int PageSize { get; init; }
 }
 
 public class GetEmployeesWithPaginationQueryHandler : IRequestHandler<GetEmployeesWithPaginationQuery, PaginatedList<EmployeeDto>>
