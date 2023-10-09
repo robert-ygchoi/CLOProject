@@ -2,6 +2,7 @@
 using Application.Employees.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 namespace Host.Controllers;
 
@@ -46,5 +47,11 @@ public class EmployeesController : ControllerBase
     public async Task<IActionResult> GetContactByName(string name, CancellationToken cancellationToken)
     {
         return Ok(await this._mediator.Send(new GetEmployeeContactQuery(name), cancellationToken));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetPaginated([FromQuery] GetEmployeesWithPaginationQuery getEmployeesWithPaginationQuery, CancellationToken cancellationToken)
+    {
+        return Ok(await this._mediator.Send(getEmployeesWithPaginationQuery, cancellationToken));
     }
 }

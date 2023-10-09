@@ -20,5 +20,9 @@ public class EmployeeProfile : Profile
 
         CreateMap<Employee, EmployeeContactDto>()
             .ForMember(e => e.Tel, opt => opt.MapFrom(c => c.PhoneNumber));
+
+        CreateMap<Employee, EmployeeDto>()
+            .ForMember(e => e.Joined, opt => opt.MapFrom(c => c.CreatedAt))
+            .ForMember(e => e.Tel, opt => opt.MapFrom(c => c.PhoneNumber));
     }
 }
