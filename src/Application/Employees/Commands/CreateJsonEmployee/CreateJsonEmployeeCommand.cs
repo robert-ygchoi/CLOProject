@@ -13,20 +13,20 @@ public record CreateJsonEmployeeCommand(
 
 public class CreateJsonEmployeeCommandHandler : IRequestHandler<CreateJsonEmployeeCommand, int>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
+    private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public CreateJsonEmployeeCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public CreateJsonEmployeeCommandHandler(IApplicationDbContext context, IMapper mapper)
     {
-        this._applicationDbContext = applicationDbContext;
+        this._context = context;
         this._mapper = mapper;
     }
     public async Task<int> Handle(CreateJsonEmployeeCommand request, CancellationToken cancellationToken)
     {
         Employee entity = _mapper.Map<Employee>(request);
 
-        _applicationDbContext.Employees.Add(entity);
+        _context.Employees.Add(entity);
 
-        return await _applicationDbContext.SaveChangesAsync(cancellationToken);
+        return await _context.SaveChangesAsync(cancellationToken);
     }
 }

@@ -25,19 +25,19 @@ public class CreateCsvEmployeeCommandMap : ClassMap<CreateCsvEmployeeCommand>
 
 public class CreateCsvEmployeeCommandHandler : IRequestHandler<CreateCsvEmployeeCommand, int>
 {
-    private IApplicationDbContext _applicationDbContext;
+    private IApplicationDbContext _context;
     private IMapper _mapper;
 
-    public CreateCsvEmployeeCommandHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public CreateCsvEmployeeCommandHandler(IApplicationDbContext context, IMapper mapper)
     {
-        this._applicationDbContext = applicationDbContext;
+        this._context = context;
         this._mapper = mapper;
     }
     public async Task<int> Handle(CreateCsvEmployeeCommand request, CancellationToken cancellationToken)
     {
         Employee entity = _mapper.Map<Employee>(request);
-        _applicationDbContext.Employees.Add(entity);
+        _context.Employees.Add(entity);
 
-        return await _applicationDbContext.SaveChangesAsync(cancellationToken);
+        return await _context.SaveChangesAsync(cancellationToken);
     }
 }

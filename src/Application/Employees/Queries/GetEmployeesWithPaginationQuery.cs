@@ -14,18 +14,18 @@ public record GetEmployeesWithPaginationQuery : IRequest<PaginatedList<EmployeeD
 
 public class GetEmployeesWithPaginationQueryHandler : IRequestHandler<GetEmployeesWithPaginationQuery, PaginatedList<EmployeeDto>>
 {
-    private readonly IApplicationDbContext _applicationDbContext;
+    private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetEmployeesWithPaginationQueryHandler(IApplicationDbContext applicationDbContext, IMapper mapper)
+    public GetEmployeesWithPaginationQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
-        this._applicationDbContext = applicationDbContext;
+        this._context = context;
         this._mapper = mapper;
     }
 
     public async Task<PaginatedList<EmployeeDto>> Handle(GetEmployeesWithPaginationQuery request, CancellationToken cancellationToken)
     {
-        return await _applicationDbContext.Employees
+        return await _context.Employees
             .OrderBy(e => e.Name)
             .ProjectTo<EmployeeDto>(_mapper.ConfigurationProvider)
             .PaginatedListAsync(request.PageNumber, request.PageSize);
