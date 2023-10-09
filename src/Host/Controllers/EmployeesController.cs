@@ -1,6 +1,8 @@
 ﻿using Application.Employees.Commands.ConvertEmployee;
+using Application.Employees.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 namespace Host.Controllers;
 
@@ -39,5 +41,17 @@ public class EmployeesController : ControllerBase
 
         // TODO: value managed
         return Created(new Uri("/api/employee", UriKind.Relative), null);
+    }
+
+    [HttpGet("{name}")]
+    public async Task<IActionResult> GetContactByName(string name, CancellationToken cancellationToken)
+    {
+        return Ok(await this._mediator.Send(new GetEmployeeContactQuery(name), cancellationToken));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetPaginated([FromQuery] GetEmployeesWithPaginationQuery getEmployeesWithPaginationQuery, CancellationToken cancellationToken)
+    {
+        return Ok(await this._mediator.Send(getEmployeesWithPaginationQuery, cancellationToken));
     }
 }
