@@ -1,5 +1,6 @@
 ﻿using Application.Employees.Commands.CreateCsvEmployee;
 using Application.Employees.Commands.CreateJsonEmployee;
+using Application.Employees.Queries;
 using AutoMapper;
 using Domain.Entities;
 
@@ -16,5 +17,8 @@ public class EmployeeProfile : Profile
         CreateMap<CreateJsonEmployeeCommand, Employee>()
             .ForMember(e => e.CreatedAt, opt => opt.MapFrom(c => c.Joined))
             .ForMember(e => e.PhoneNumber, opt => opt.MapFrom(c => c.Tel));
+
+        CreateMap<Employee, EmployeeContactDto>()
+            .ForMember(e => e.Tel, opt => opt.MapFrom(c => c.PhoneNumber));
     }
 }
