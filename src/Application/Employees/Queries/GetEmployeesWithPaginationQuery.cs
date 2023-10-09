@@ -1,7 +1,7 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Models;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using CleanArchitecture.Application.Common.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Employees.Queries;

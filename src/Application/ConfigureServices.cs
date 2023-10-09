@@ -1,4 +1,5 @@
 ﻿using Application.Common.Behaviours;
+using MediatR.Pipeline;
 using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -11,8 +12,9 @@ public static class ConfigureServices
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            cfg.AddOpenRequestPreProcessor(typeof(RequestLoggingBehavior<>));
+            cfg.AddOpenRequestPostProcessor(typeof(ResponseLoggingBehavior<,>));
         });
 
         return services;

@@ -29,15 +29,17 @@ public class EmployeesController : ControllerBase
             return BadRequest();
 
         // NOTE: transaction 고민이 필요.
-        await this._mediator.Send(
-            new ConvertFileEmployeeCommand(csvOrJsonFileContent), 
-            cancellationToken
-        );
+        if(csvOrJsonFileContent is not null)
+            await this._mediator.Send(
+                new ConvertFileEmployeeCommand(csvOrJsonFileContent), 
+                cancellationToken
+            );
 
-        await this._mediator.Send(
-            new ConvertStringEmployeeCommand(csvOrJsonStringContent),
-            cancellationToken
-        );
+        if (csvOrJsonStringContent is not null)
+            await this._mediator.Send(
+                new ConvertStringEmployeeCommand(csvOrJsonStringContent),
+                cancellationToken
+            );
 
         // TODO: value managed
         return Created(new Uri("/api/employee", UriKind.Relative), null);
