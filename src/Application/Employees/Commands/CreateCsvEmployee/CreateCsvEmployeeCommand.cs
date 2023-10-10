@@ -1,7 +1,9 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Interfaces;
 using AutoMapper;
 using CsvHelper.Configuration;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Employees.Commands.CreateCsvEmployee;
 
@@ -50,7 +52,15 @@ public class CreateCsvEmployeeCommandHandler : IRequestHandler<CreateCsvEmployee
     }
     public async Task<int> Handle(CreateCsvEmployeeCommand request, CancellationToken cancellationToken)
     {
+        var query = from employee in _context.Employees
+                    where employee.Name == request.Name
+                    select employee;
+
+        if (await query.AnyAsync(cancellationToken))
+            throw new DuplicateKeyException(request.Name);
+
         Employee entity = _mapper.Map<Employee>(request);
+
         _context.Employees.Add(entity);
 
         return await _context.SaveChangesAsync(cancellationToken);

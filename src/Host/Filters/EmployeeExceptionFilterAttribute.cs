@@ -19,6 +19,7 @@ public class EmployeeExceptionFilterAttribute : ExceptionFilterAttribute
                 { typeof(CsvHelper.MissingFieldException), HandleBadRequestException },
                 { typeof(JsonException), HandleBadRequestException },
                 { typeof(EmployeeParseFromJsonException), HandleBadRequestException },
+                { typeof(DuplicateKeyException), HandleBadRequestException },
             };
         
     }

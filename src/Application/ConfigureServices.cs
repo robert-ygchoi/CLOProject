@@ -1,4 +1,4 @@
-﻿using Application.Common.Behaviours;
+﻿using Application.Common.Behaviors;
 using MediatR.Pipeline;
 using System.Reflection;
 
