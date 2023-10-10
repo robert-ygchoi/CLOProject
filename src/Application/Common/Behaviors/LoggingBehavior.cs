@@ -1,7 +1,7 @@
 ﻿using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Common.Behaviours;
+namespace Application.Common.Behaviors;
 
 public class RequestLoggingBehavior<TRequest> : IRequestPreProcessor<TRequest> where TRequest : notnull
 {
@@ -28,7 +28,7 @@ public class ResponseLoggingBehavior<TRequest, TResponse> : IRequestPostProcesso
     public ResponseLoggingBehavior(ILogger<TRequest> logger)
     {
         _logger = logger;
-        
+
     }
 
     public Task Process(TRequest request, TResponse response, CancellationToken cancellationToken)

@@ -1,8 +1,7 @@
-﻿using Application.Employees.Commands.CreateCsvEmployee;
-using Application.Employees.Commands.CreateJsonEmployee;
+﻿using Application.Employees.Commands.CreateJsonEmployee;
 using FluentValidation.TestHelper;
 
-namespace Application.UnitTests.Common.Behaviours.Validation;
+namespace Application.UnitTests.Common.Behaviors.Validation;
 
 public class JsonEmployeeTests
 {

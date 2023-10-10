@@ -1,6 +1,9 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 
 namespace Application.Employees.Commands.CreateJsonEmployee;
@@ -38,6 +41,13 @@ public class CreateJsonEmployeeCommandHandler : IRequestHandler<CreateJsonEmploy
     }
     public async Task<int> Handle(CreateJsonEmployeeCommand request, CancellationToken cancellationToken)
     {
+        var query = from employee in _context.Employees
+                    where employee.Name == request.Name
+                    select employee;
+
+        if (await query.AnyAsync(cancellationToken))
+            throw new DuplicateKeyException(request.Name);
+
         Employee entity = _mapper.Map<Employee>(request);
 
         _context.Employees.Add(entity);
