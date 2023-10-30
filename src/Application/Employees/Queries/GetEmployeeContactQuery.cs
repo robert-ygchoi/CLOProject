@@ -1,10 +1,11 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Exceptions;
 using AutoMapper;
+using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Employees.Queries;
 
-public record GetEmployeeContactQuery:  IRequest<EmployeeContactDto?>
+public record GetEmployeeContactQuery:  IRequest<EmployeeContactDto>
 {
     public GetEmployeeContactQuery(string name)
     {
@@ -14,27 +15,22 @@ public record GetEmployeeContactQuery:  IRequest<EmployeeContactDto?>
     public string Name { get; init; }
 }
 
-public class GetEmployeeContactQueryHandler : IRequestHandler<GetEmployeeContactQuery, EmployeeContactDto?>
+public class GetEmployeeContactQueryHandler : IRequestHandler<GetEmployeeContactQuery, EmployeeContactDto>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IEmployeeRepository _employeeRepository;
     private readonly IMapper _mapper;
 
-    public GetEmployeeContactQueryHandler(IApplicationDbContext context, IMapper mapper)
+    public GetEmployeeContactQueryHandler(IEmployeeRepository employeeRepository, IMapper mapper)
     {
-        this._context = context;
+        this._employeeRepository = employeeRepository;
         this._mapper = mapper;
     }
-    public async Task<EmployeeContactDto?> Handle(GetEmployeeContactQuery request, CancellationToken cancellationToken)
+    public async Task<EmployeeContactDto> Handle(GetEmployeeContactQuery request, CancellationToken cancellationToken)
     {
-        var query = from employee in this._context.Employees.AsNoTracking()
-                     where employee.Name == request.Name
-                     select employee;
+        var entity = await _employeeRepository.GetEmployeeByNameAsync(request.Name, cancellationToken);
 
-        var entity = await query.FirstOrDefaultAsync(cancellationToken);
-
-        // NOTE; null is not found
         if (entity is null)
-            return null;
+            throw new EntityNotFoundException(request.Name);
 
         return _mapper.Map<EmployeeContactDto>(entity);
     }

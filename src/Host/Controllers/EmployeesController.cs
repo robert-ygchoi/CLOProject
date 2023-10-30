@@ -51,8 +51,7 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetContactByName(string name, CancellationToken cancellationToken)
     {
-        var employeeContactDto = await this._mediator.Send(new GetEmployeeContactQuery(name), cancellationToken);
-        return employeeContactDto is null ? NotFound() : Ok(employeeContactDto);
+        return Ok(await this._mediator.Send(new GetEmployeeContactQuery(name), cancellationToken));
     }
 
     [HttpGet]

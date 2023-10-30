@@ -20,6 +20,7 @@ public class EmployeeExceptionFilterAttribute : ExceptionFilterAttribute
                 { typeof(JsonException), HandleBadRequestException },
                 { typeof(EmployeeParseFromJsonException), HandleBadRequestException },
                 { typeof(DuplicateKeyException), HandleBadRequestException },
+                { typeof(EntityNotFoundException), HandleNotFoundException },
             };
         
     }
@@ -41,16 +42,30 @@ public class EmployeeExceptionFilterAttribute : ExceptionFilterAttribute
 
     private void HandleBadRequestException(ExceptionContext context)
     {
-        // TODO: define ProblemDetails
         ProblemDetails details = new()
         {
             Title = context.Exception.Message,
             Detail = context.Exception.StackTrace,
         };
+
+        // TODO: define ProblemDetails
         context.Result = new BadRequestObjectResult(details);
 
         context.ExceptionHandled = true;
     }
+
+    private void HandleNotFoundException(ExceptionContext context)
+    {
+        ProblemDetails details = new()
+        {
+            Title = context.Exception.Message,
+            Detail = context.Exception.StackTrace,
+        };
+        context.Result = new NotFoundObjectResult(details);
+
+        context.ExceptionHandled = true;
+    }
+
     private void HandleValidationException(ExceptionContext context)
     {
         var exception = (ValidationException)context.Exception;

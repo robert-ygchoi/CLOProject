@@ -1,7 +1,7 @@
 ﻿using Application.Common.Models;
-using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Domain.Interfaces;
 
 namespace Application.Employees.Queries;
 
@@ -23,18 +23,18 @@ public record GetEmployeesWithPaginationQuery : IRequest<PaginatedList<EmployeeD
 
 public class GetEmployeesWithPaginationQueryHandler : IRequestHandler<GetEmployeesWithPaginationQuery, PaginatedList<EmployeeDto>>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IEmployeeRepository _employeeRepository;
     private readonly IMapper _mapper;
 
-    public GetEmployeesWithPaginationQueryHandler(IApplicationDbContext context, IMapper mapper)
+    public GetEmployeesWithPaginationQueryHandler(IEmployeeRepository employeeRepository, IMapper mapper)
     {
-        this._context = context;
+        this._employeeRepository = employeeRepository;
         this._mapper = mapper;
     }
 
     public async Task<PaginatedList<EmployeeDto>> Handle(GetEmployeesWithPaginationQuery request, CancellationToken cancellationToken)
     {
-        return await _context.Employees
+        return await _employeeRepository.Employees
             .OrderBy(e => e.Name)
             .ProjectTo<EmployeeDto>(_mapper.ConfigurationProvider)
             .PaginatedListAsync(request.PageNumber, request.PageSize);

@@ -1,9 +1,8 @@
 ﻿using Application.Common.Exceptions;
-using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 
 namespace Application.Employees.Commands.CreateJsonEmployee;
@@ -31,27 +30,18 @@ public record CreateJsonEmployeeCommand : IRequest<int>
 
 public class CreateJsonEmployeeCommandHandler : IRequestHandler<CreateJsonEmployeeCommand, int>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IEmployeeRepository _employeeRepository;
     private readonly IMapper _mapper;
 
-    public CreateJsonEmployeeCommandHandler(IApplicationDbContext context, IMapper mapper)
+    public CreateJsonEmployeeCommandHandler(IEmployeeRepository employeeRepository, IMapper mapper)
     {
-        this._context = context;
+        this._employeeRepository = employeeRepository;
         this._mapper = mapper;
     }
     public async Task<int> Handle(CreateJsonEmployeeCommand request, CancellationToken cancellationToken)
     {
-        var query = from employee in _context.Employees
-                    where employee.Name == request.Name
-                    select employee;
-
-        if (await query.AnyAsync(cancellationToken))
-            throw new DuplicateKeyException(request.Name);
-
         Employee entity = _mapper.Map<Employee>(request);
 
-        _context.Employees.Add(entity);
-
-        return await _context.SaveChangesAsync(cancellationToken);
+        return await _employeeRepository.AddEmployeeAsync(entity, cancellationToken);
     }
 }

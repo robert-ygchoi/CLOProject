@@ -1,8 +1,8 @@
 ﻿using Application.Common.Exceptions;
-using Application.Interfaces;
 using AutoMapper;
 using CsvHelper.Configuration;
 using Domain.Entities;
+using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Employees.Commands.CreateCsvEmployee;
@@ -42,27 +42,18 @@ public class CreateCsvEmployeeCommandMap : ClassMap<CreateCsvEmployeeCommand>
 
 public class CreateCsvEmployeeCommandHandler : IRequestHandler<CreateCsvEmployeeCommand, int>
 {
-    private IApplicationDbContext _context;
+    private readonly IEmployeeRepository _employeeRepository;
     private IMapper _mapper;
 
-    public CreateCsvEmployeeCommandHandler(IApplicationDbContext context, IMapper mapper)
+    public CreateCsvEmployeeCommandHandler(IEmployeeRepository employeeRepository, IMapper mapper)
     {
-        this._context = context;
+        this._employeeRepository = employeeRepository;
         this._mapper = mapper;
     }
     public async Task<int> Handle(CreateCsvEmployeeCommand request, CancellationToken cancellationToken)
     {
-        var query = from employee in _context.Employees
-                    where employee.Name == request.Name
-                    select employee;
-
-        if (await query.AnyAsync(cancellationToken))
-            throw new DuplicateKeyException(request.Name);
-
         Employee entity = _mapper.Map<Employee>(request);
-
-        _context.Employees.Add(entity);
-
-        return await _context.SaveChangesAsync(cancellationToken);
+        
+        return await _employeeRepository.AddEmployeeAsync(entity, cancellationToken);
     }
 }

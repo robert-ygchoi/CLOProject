@@ -1,5 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Domain.Interfaces;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -11,7 +12,7 @@ public static class ConfigureServices
         services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseInMemoryDatabase("EmployeeDb"));
 
-        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
         return services;
     }
